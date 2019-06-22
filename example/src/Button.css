@@ -1,0 +1,10 @@
+.button {
+  font-family: inherit;
+  font-size: 16px;
+  border: none;
+  margin: 2px 0px;
+  padding: 4px 8px;
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 2px;
+}

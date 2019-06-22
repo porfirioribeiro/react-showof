@@ -1,0 +1,25 @@
+.tooltip {
+  position: absolute;
+  z-index: 20;
+  background: rgba(97, 97, 97, 0.9);
+  color: white;
+  padding: 2px 8px;
+
+  border-radius: 4px;
+  display: inline-block;
+  max-width: 170px;
+}
+
+.tooltip.idle,
+.tooltip.exit {
+  opacity: 0;
+}
+
+.tooltip.enter {
+  transition: opacity 300ms ease-in;
+  opacity: 1;
+}
+
+.tooltip.exit {
+  transition: opacity 200ms ease-out;
+}

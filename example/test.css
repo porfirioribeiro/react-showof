@@ -1,0 +1,24 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+    'Helvetica Neue', sans-serif;
+}
+
+.test {
+  border: 1px solid gray;
+}
+
+.test.idle,
+.test.exit {
+  opacity: 0;
+  width: 20%;
+}
+
+.test.enter {
+  transition: opacity 300ms linear, width 300ms ease-in;
+  opacity: 1;
+  width: 100%;
+}
+
+.test.exit {
+  transition: opacity 300ms linear, width 300ms ease-out;
+}
