@@ -5,6 +5,7 @@ export type ShowOfState = 'enter' | 'exit' | 'idle';
 export type ShowOfComponentProps<P> = P & {
   when: boolean;
   state: ShowOfState;
+  onTransitionEnd?: React.TransitionEventHandler<any>;
 };
 
 type ShowOfComponent<P> =
@@ -13,32 +14,45 @@ type ShowOfComponent<P> =
 
 export interface ShowOfProps<P> {
   when: boolean;
-  duration: number;
+  duration?: number;
   appear?: boolean;
   render: ShowOfComponent<P>;
 }
 
-export const ShowOf = React.forwardRef(function ShowOf<P extends {}, R extends any>(
-  { render, when, duration, appear = true, ...props }: ShowOfProps<P> & P,
+function ShowOfInner<P extends {}, R extends any>(
+  props: ShowOfProps<P> & P,
   ref: R
-) {
+): React.ReactElement | null {
+  const { appear = true } = props;
   const [state, update] = React.useState<ShowOfState>(appear ? 'idle' : 'enter');
 
-  const lastWhen = React.useRef(when);
+  const lastWhen = React.useRef(props.when);
+
+  //@ts-ignore
+  const onTransitionEnd = React.useMemo(() => {
+    if (!props.duration) return () => !lastWhen.current && update('idle');
+  }, [props.duration]);
 
   React.useEffect(() => {
-    if (when !== lastWhen.current || (when && appear)) {
-      requestAnimationFrame(() => update(when ? 'enter' : 'exit'));
-      lastWhen.current = when;
+    if (props.when !== lastWhen.current || (props.when && appear)) {
+      requestAnimationFrame(() => update(props.when ? 'enter' : 'exit'));
+      lastWhen.current = props.when;
     }
-    if (!when) {
-      const ti = setTimeout(update, duration, 'idle');
+    if (!props.when && props.duration) {
+      const ti = setTimeout(update, props.duration, 'idle');
       return () => clearTimeout(ti);
     }
     return;
-  }, [when]);
+  }, [props.when, props.duration]);
 
-  return when || state !== 'idle'
-    ? React.createElement(render, Object.assign({ when, state, ref }, props) as any)
-    : null;
-});
+  if (!props.when && state === 'idle') return null;
+
+  const nprops = Object.assign({ state, onTransitionEnd, ref }, props);
+  delete nprops.appear;
+  delete nprops.duration;
+  delete nprops.render;
+
+  return React.createElement(props.render, nprops as any);
+}
+
+export const ShowOf: typeof ShowOfInner = React.forwardRef(ShowOfInner) as any;

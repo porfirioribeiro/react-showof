@@ -58,7 +58,14 @@ the animation.
 - `render`: Component or function to render
 - `...props`: the rest of the props passed to `ShowOf` will be passed to the `render` component or function
 
-`render` component/function receives as props the `when` prop and the current `State`, plus the rest of the props.
+`render` component/function receives as props:
+
+- `when` prop
+- `state` the current `State`
+- `onTransitionEnd` to assing to the inner dom component so we can unmount after the animation run
+- `...props` plus the rest of the props.
+
+**Note** `onTransitionEnd` is only passed when you don't specify `duration`
 
 `State` is composed by 3 states `idle`, `enter`, `exit`:
 

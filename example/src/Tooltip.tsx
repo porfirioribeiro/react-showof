@@ -11,7 +11,13 @@ type TooltipProps = ShowOfComponentProps<{
   placement?: Placement;
 }>;
 
-export function Tooltip({ state, tooltip, placement = 'auto', buttonRef }: TooltipProps) {
+export function Tooltip({
+  state,
+  tooltip,
+  onTransitionEnd,
+  placement = 'auto',
+  buttonRef,
+}: TooltipProps) {
   const ref = React.useRef<HTMLDivElement>(null);
 
   React.useLayoutEffect(() => {
@@ -22,7 +28,7 @@ export function Tooltip({ state, tooltip, placement = 'auto', buttonRef }: Toolt
   }, []);
 
   return (
-    <div ref={ref} className={`tooltip ${state}`}>
+    <div ref={ref} className={`tooltip ${state}`} onTransitionEnd={onTransitionEnd}>
       {tooltip}
     </div>
   );

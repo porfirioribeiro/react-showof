@@ -29,7 +29,6 @@ export function Button({ tooltip, tipPlacement, children, ...props }: ButtonProp
       {tooltip && (
         <ShowOf
           when={showTip}
-          duration={200}
           render={Tooltip}
           tooltip={tooltip}
           buttonRef={buttonRef}
