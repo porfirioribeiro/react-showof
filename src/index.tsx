@@ -29,7 +29,9 @@ function ShowOfInner<P extends {}, R extends any>(
 
   //@ts-ignore
   const onTransitionEnd = React.useMemo(() => {
-    if (!props.duration) return () => !lastWhen.current && update('idle');
+    if (!props.duration)
+      return (e: React.TransitionEvent<any>) =>
+        !lastWhen.current && e.currentTarget === e.target && update('idle');
   }, [props.duration]);
 
   React.useEffect(() => {
