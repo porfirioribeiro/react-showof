@@ -18,13 +18,10 @@ export interface ShowOfProps<P> {
   render: ShowOfComponent<P>;
 }
 
-export function ShowOf<P extends {}>({
-  render,
-  when,
-  duration,
-  appear = true,
-  ...props
-}: ShowOfProps<P> & P) {
+export const ShowOf = React.forwardRef(function ShowOf<P extends {}, R extends any>(
+  { render, when, duration, appear = true, ...props }: ShowOfProps<P> & P,
+  ref: R
+) {
   const [state, update] = React.useState<ShowOfState>(appear ? 'idle' : 'enter');
 
   const lastWhen = React.useRef(when);
@@ -42,6 +39,6 @@ export function ShowOf<P extends {}>({
   }, [when]);
 
   return when || state !== 'idle'
-    ? React.createElement(render, Object.assign({ when, state }, props) as any)
+    ? React.createElement(render, Object.assign({ when, state, ref }, props) as any)
     : null;
-}
+});
