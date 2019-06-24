@@ -10,7 +10,7 @@ const Xp = React.forwardRef<HTMLDivElement, ShowOfComponentProps<{ a: string }>>
   <div ref={ref}>{p.a}</div>
 ));
 
-function Test(p: { show: boolean; appear?: boolean }) {
+function Test(p: { show: boolean; noAppear?: boolean }) {
   const [show, setShow] = React.useState(p.show);
   const ref = (r: HTMLDivElement | null) => {
     console.log('tst', r);
@@ -22,7 +22,7 @@ function Test(p: { show: boolean; appear?: boolean }) {
       </Button>
       <ShowOf
         when={show}
-        appear={p.appear}
+        noAppear={p.noAppear}
         duration={300}
         render={({ state }) => {
           return <div className={`test ${state}`}>Hello {state}</div>;
@@ -38,7 +38,7 @@ const App = () => {
     <div>
       <Test show={false}></Test>
       <Test show={true}></Test>
-      <Test show={true} appear={false}></Test>
+      <Test show={true} noAppear></Test>
       <Button tooltip="This is just a tip" tipPlacement="bottom-end">
         Hello
       </Button>

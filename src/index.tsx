@@ -15,7 +15,7 @@ type ShowOfComponent<P> =
 export interface ShowOfProps<P> {
   when: boolean;
   duration?: number;
-  appear?: boolean;
+  noAppear?: boolean;
   render: ShowOfComponent<P>;
 }
 
@@ -23,8 +23,7 @@ function ShowOfInner<P extends {}, R extends any>(
   props: ShowOfProps<P> & P,
   ref: R
 ): React.ReactElement | null {
-  const { appear = true } = props;
-  const [state, update] = React.useState<ShowOfState>(appear ? 'idle' : 'enter');
+  const [state, update] = React.useState<ShowOfState>(props.noAppear ? 'enter' : 'idle');
 
   const lastWhen = React.useRef(props.when);
 
@@ -34,7 +33,7 @@ function ShowOfInner<P extends {}, R extends any>(
   }, [props.duration]);
 
   React.useEffect(() => {
-    if (props.when !== lastWhen.current || (props.when && appear)) {
+    if (props.when !== lastWhen.current || (props.when && !props.noAppear)) {
       requestAnimationFrame(() => update(props.when ? 'enter' : 'exit'));
       lastWhen.current = props.when;
     }
@@ -48,7 +47,7 @@ function ShowOfInner<P extends {}, R extends any>(
   if (!props.when && state === 'idle') return null;
 
   const nprops = Object.assign({ state, onTransitionEnd, ref }, props);
-  delete nprops.appear;
+  delete nprops.noAppear;
   delete nprops.duration;
   delete nprops.render;
 

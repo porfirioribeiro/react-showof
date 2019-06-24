@@ -47,14 +47,14 @@ the animation.
 <ShowOff
   when={shouldShow}
   duration={timeToUnmount}
-  appear={animateOnMount}
+  noAppear={avoidAnimateOnMount}
   render={componentToRender}
 />
 ```
 
 - `when`: boolean, do we ant to show or not our component
 - `duration`: number, how many time do we want to wait until our component unmounts after setting when to false
-- `appear`: true, if we initially mount with `when=true`, do we want to animate the appearence of it? defaults to true.
+- `noAppear`: if we initially mount with `when=true`, do we want to animate the appearence of it?
 - `render`: Component or function to render
 - `...props`: the rest of the props passed to `ShowOf` will be passed to the `render` component or function
 
