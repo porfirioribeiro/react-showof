@@ -4,7 +4,7 @@
   "author": "Porfirio Ribeiro<porfirioribeiro@gmail.com>",
   "repository": "https://github.com/porfirioribeiro/react-showof",
   "license": "MIT",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "dist/index.js",
   "module": "dist/react-showof.esm.js",
   "typings": "dist/index.d.ts",
