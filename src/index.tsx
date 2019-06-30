@@ -16,6 +16,7 @@ export interface ShowOfProps<P> {
   when: boolean;
   duration?: number;
   noAppear?: boolean;
+  noKeepProps?: boolean;
   render: ShowOfComponent<P>;
 }
 
@@ -26,8 +27,12 @@ function ShowOfInner<P extends {}, R extends any>(
   const [state, update] = React.useState<ShowOfState>(props.noAppear ? 'enter' : 'idle');
 
   const lastWhen = React.useRef(props.when);
+  // Keep last positive props, to pass as render
+  // User props might be already null when we are unmounting the component
+  const lastInProps = React.useRef<ShowOfProps<P> & P>(props);
+  if (props.when) lastInProps.current = props;
 
-  //@ts-ignore
+  // @ts-ignore
   const onTransitionEnd = React.useMemo(() => {
     if (!props.duration)
       return (e: React.TransitionEvent<any>) =>
@@ -48,8 +53,13 @@ function ShowOfInner<P extends {}, R extends any>(
 
   if (!props.when && state === 'idle') return null;
 
-  const nprops = Object.assign({ state, onTransitionEnd, ref }, props);
+  const nprops = Object.assign({}, props.noKeepProps ? props : lastInProps.current, {
+    state,
+    onTransitionEnd,
+    ref,
+  });
   delete nprops.noAppear;
+  delete nprops.noKeepProps;
   delete nprops.duration;
   delete nprops.render;
 

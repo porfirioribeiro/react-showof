@@ -48,6 +48,7 @@ the animation.
   when={shouldShow}
   duration={timeToUnmount}
   noAppear={avoidAnimateOnMount}
+  noKeepProps={alwaysPassFreshProps}
   render={componentToRender}
 />
 ```
@@ -55,6 +56,7 @@ the animation.
 - `when`: boolean, do we ant to show or not our component
 - `duration`: number, how many time do we want to wait until our component unmounts after setting when to false
 - `noAppear`: if we initially mount with `when=true`, do we want to animate the appearence of it?
+- `noKeepProps`: when we are unmounting we pass the extra props from last positive render to `render`
 - `render`: Component or function to render
 - `...props`: the rest of the props passed to `ShowOf` will be passed to the `render` component or function
 
@@ -72,6 +74,10 @@ the animation.
 - `idle` when the component is mounted, its the begin style where you want to animate `from` when mounting.
 - `enter` just after rendering `idle` state, it is changed to this state, where you set the `to` styes and transitions you want to apply
 - `exit` is where `when` becames false and we start unmounting the component, where you set the to styles for the unmount transition animation
+
+Extra props passed to `ShowOf` will be passed down to the `render` component.
+By default when unmounting we keep passing down the last "positive" props, that means the last props before changing `when` to false.
+Check this [example](https://codesandbox.io/s/react-showof-lastprops-wody1)
 
 ### Example
 
