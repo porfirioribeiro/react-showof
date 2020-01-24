@@ -4,20 +4,24 @@
   "author": "Porfirio Ribeiro<porfirioribeiro@gmail.com>",
   "repository": "https://github.com/porfirioribeiro/react-showof",
   "license": "MIT",
-  "version": "0.1.6",
-  "main": "dist/index.js",
-  "module": "dist/react-showof.esm.js",
-  "typings": "dist/index.d.ts",
+  "version": "0.2.0-alpha",
+  "main": "dist/showof.js",
+  "module": "dist/showof.modern.js",
+  "umd:main": "dist/showof.umd.js",
+  "source": "src/index.tsx",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "preact"
   ],
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --env=jsdom",
-    "size": "bundlesize"
+    "test": "jest",
+    "build": "yarn build:react && yarn build:preact",
+    "build:react": "microbundle -f modern,cjs,umd",
+    "build:preact": "microbundle -f modern,cjs,umd -o preact --alias ./imports/react=./imports/preact --globals preact/hooks=preactHooks,preact/compat=preactCompat"
   },
   "peerDependencies": {
+    "preact": ">=10",
     "react": ">=16"
   },
   "husky": {
@@ -25,12 +29,6 @@
       "pre-commit": "pretty-quick --staged"
     }
   },
-  "bundlesize": [
-    {
-      "path": "dist/react-showof.cjs.production.min.js",
-      "maxSize": "500b"
-    }
-  ],
   "prettier": {
     "printWidth": 100,
     "semi": true,
@@ -41,14 +39,24 @@
     "@types/jest": "^24.9.1",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
-    "bundlesize": "^0.18.0",
     "husky": "^4.2.1",
+    "jest": "^25.1.0",
+    "microbundle": "next",
+    "preact": "^10.2.1",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "tsdx": "^0.12.3",
+    "ts-jest": "^25.0.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.5"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.test.+(ts|tsx|js)"
+    ]
   }
 }

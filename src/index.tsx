@@ -1,16 +1,28 @@
-import * as React from 'react';
+import {
+  TransitionEventHandler,
+  ComponentClass,
+  FunctionComponent,
+  ReactElement,
+  TransitionEvent,
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+  createElement,
+  forwardRef,
+} from './imports/react';
 
 export type ShowOfState = 'enter' | 'exit' | 'idle';
 
 export type ShowOfComponentProps<P> = P & {
   when: boolean;
   state: ShowOfState;
-  onTransitionEnd?: React.TransitionEventHandler<any>;
+  onTransitionEnd?: TransitionEventHandler<any>;
 };
 
 type ShowOfComponent<P> =
-  | React.ComponentClass<ShowOfComponentProps<P>>
-  | React.FunctionComponent<ShowOfComponentProps<P>>;
+  | ComponentClass<ShowOfComponentProps<P>>
+  | FunctionComponent<ShowOfComponentProps<P>>;
 
 export interface ShowOfProps<P> {
   when: boolean;
@@ -23,23 +35,23 @@ export interface ShowOfProps<P> {
 function ShowOfInner<P extends {}, R extends any>(
   props: ShowOfProps<P> & P,
   ref: R
-): React.ReactElement | null {
-  const [state, update] = React.useState<ShowOfState>(props.noAppear ? 'enter' : 'idle');
+): ReactElement | null {
+  const [state, update] = useState<ShowOfState>(props.noAppear ? 'enter' : 'idle');
 
-  const lastWhen = React.useRef(props.when);
+  const lastWhen = useRef(props.when);
   // Keep last positive props, to pass as render
   // User props might be already null when we are unmounting the component
-  const lastInProps = React.useRef<ShowOfProps<P> & P>(props);
+  const lastInProps = useRef<ShowOfProps<P> & P>(props);
   if (props.when) lastInProps.current = props;
 
   // @ts-ignore
-  const onTransitionEnd = React.useMemo(() => {
+  const onTransitionEnd = useMemo(() => {
     if (!props.duration)
-      return (e: React.TransitionEvent<any>) =>
+      return (e: TransitionEvent<any>) =>
         !lastWhen.current && e.currentTarget === e.target && update('idle');
   }, [props.duration]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.when !== lastWhen.current || (props.when && !props.noAppear)) {
       requestAnimationFrame(() => update(props.when ? 'enter' : 'exit'));
       lastWhen.current = props.when;
@@ -63,7 +75,7 @@ function ShowOfInner<P extends {}, R extends any>(
   delete nprops.duration;
   delete nprops.render;
 
-  return React.createElement(props.render, nprops as any);
+  return createElement(props.render, nprops as any);
 }
 
-export const ShowOf: typeof ShowOfInner = React.forwardRef(ShowOfInner) as any;
+export const ShowOf: typeof ShowOfInner = forwardRef(ShowOfInner) as any;

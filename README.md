@@ -128,6 +128,16 @@ function Test() {
 }
 ```
 
+## Preact
+
+To use `react-showof` with `preact` you can do:
+
+```tsx
+import { ShowOf } from 'react-showof/preact';
+```
+
+Because `ShowOf` uses `forwardRef` to allow you to pass ref's easy to the inner element, that would mean importing `forwardRef` from `preact/compat` and that might bring a unexpected behaviour
+
 ## Todo
 
 - Docs
