@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "animate.css": "^3.7.2",
-    "popper.js": "^1.15.0",
-    "react-app-polyfill": "^1.0.0",
+    "popper.js": "^1.16.1",
+    "react-app-polyfill": "^1.0.5",
     "src": "^1.1.2"
   },
   "alias": {
@@ -19,9 +19,9 @@
     "scheduler/tracing": "../node_modules/scheduler/tracing-profiling"
   },
   "devDependencies": {
-    "@types/react": "^16.8.15",
-    "@types/react-dom": "^16.8.4",
-    "parcel": "^1.12.3",
-    "typescript": "^3.4.5"
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "parcel": "^1.12.4",
+    "typescript": "^3.7.5"
   }
 }
