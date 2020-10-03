@@ -12,7 +12,11 @@ type AnimatedProps = {
 
 export function Animated(props: ShowOfComponentProps<AnimatedProps>) {
   return (
-    <div className={`animated faster ${props.state === 'exit' ? props.out : props.in}`}>
+    <div
+      className={`animate__animated animate__faster animate__${
+        props.state === 'exit' ? props.out : props.in
+      }`}
+    >
       {props.children}
     </div>
   );
